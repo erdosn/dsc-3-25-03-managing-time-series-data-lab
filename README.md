@@ -30,7 +30,8 @@ We will start the lab by loading the required libraries
 
 ```python
 # Load required libraries
-
+import pandas as pd
+import statsmodels as sm
 ```
 
 ## Loading time series data
@@ -43,7 +44,17 @@ We can bring in this data using the `load_pandas()`-method, which will allow us 
 
 ```python
 # Load the "co2" dataset from sm.datasets
-
+# load in data_set
+data_set = sm.datasets.co2.load()
+# load in the data_set into pandas data_frame
+df = pd.DataFrame(data=data_set["data"])
+# create index with frequency and periods
+index = pd.DatetimeIndex(data=df["date"].str.decode("utf-8"), freq='W-SAT', periods=df.date.size)
+# set index to date column
+df.set_index(index, inplace=True)
+# drop date column from table
+df.drop("date", inplace=True, axis=1)
+df.head()
 ```
 
 Let's check the type of CO2 and also first 15 entries of CO2 dataframe as our first exploratory step.
